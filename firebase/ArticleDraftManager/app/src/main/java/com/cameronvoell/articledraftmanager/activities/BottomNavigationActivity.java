@@ -28,23 +28,17 @@ public class BottomNavigationActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_global:
                     navigateToArticleDraftListFragment();
                     PrefUtils.saveSelectedFragment(getBaseContext(), PrefUtils.SELECTED_FRAGMENT_1);
                     Toast.makeText(getApplicationContext(),
                             "selected article list",
                             Toast.LENGTH_SHORT).show();
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_drafts:
                     navigateToArticleDraftListFragment();
                     Toast.makeText(getApplicationContext(),
                             "selected fragment 2",
-                            Toast.LENGTH_SHORT).show();
-                    return true;
-                case R.id.navigation_notifications:
-                    navigateToArticleDraftListFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "selected fragment 3",
                             Toast.LENGTH_SHORT).show();
                     return true;
             }
