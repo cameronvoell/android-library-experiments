@@ -14,7 +14,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.ArticlePreviewViewHolder> {
+public class ArticleDraftListAdapter extends RecyclerView.Adapter<ArticleDraftListAdapter.ArticlePreviewViewHolder> {
 
     private final LayoutInflater mInflater;
     private List<ArticleDraft> mArticleDrafts = Collections.emptyList();
@@ -32,7 +32,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         }
     }
 
-    public ArticleListAdapter(Context context, OnArticleDraftListInteractionListener listener) {
+    public ArticleDraftListAdapter(Context context, OnArticleDraftListInteractionListener listener) {
         mInflater = LayoutInflater.from(context);
         mListener = listener;
 

@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import com.cameronvoell.articledraftmanager.R;
 import com.cameronvoell.articledraftmanager.activities.EditDraftActivity;
 import com.cameronvoell.articledraftmanager.adapters.ArticleDraftListAdapter;
+import com.cameronvoell.articledraftmanager.adapters.PublishedArticleListAdapter;
 import com.cameronvoell.articledraftmanager.data.ArticleDraft;
+import com.cameronvoell.articledraftmanager.data.PublishedArticle;
 import com.cameronvoell.articledraftmanager.viewmodel.ArticleDraftViewModel;
+import com.cameronvoell.articledraftmanager.viewmodel.PublishedArticleViewModel;
 
 import java.util.List;
 
@@ -21,16 +24,16 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ArticleDraftListFragment extends Fragment {
+public class GlobalArticleListFragment extends Fragment {
 
-    private ArticleDraftViewModel mArticleDraftViewModel;
-    private ArticleDraftListAdapter.OnArticleDraftListInteractionListener mArticleInteractionListener;
+    private PublishedArticleViewModel mPublishedArticleViewModel;
+    private PublishedArticleListAdapter.OnPublishedArticleListInteractionListener mArticleInteractionListener;
 
-    public ArticleDraftListFragment() {
+    public GlobalArticleListFragment() {
    }
 
-    public static ArticleDraftListFragment newInstance() {
-        ArticleDraftListFragment fragment = new ArticleDraftListFragment();
+    public static GlobalArticleListFragment newInstance() {
+        GlobalArticleListFragment fragment = new GlobalArticleListFragment();
         return fragment;
     }
 
@@ -46,27 +49,27 @@ public class ArticleDraftListFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_article_draft_list, container, false);
 
         RecyclerView recyclerView = layout.findViewById(R.id.articleListRecyclerView);
-        mArticleInteractionListener = new ArticleDraftListAdapter.OnArticleDraftListInteractionListener() {
+        mArticleInteractionListener = new PublishedArticleListAdapter.OnPublishedArticleListInteractionListener() {
             @Override
-            public void onArticleDraftListInteraction(ArticleDraft item) {
+            public void onPublishedArticleListInteraction(PublishedArticle publishedArticle) {
                 Intent intent = new Intent();
-                intent.putExtra(ArticleDraft.INTENT_EXTRA_NAME, item);
+                intent.putExtra(ArticleDraft.INTENT_EXTRA_NAME, publishedArticle);
                 intent.setClass(getContext(), EditDraftActivity.class);
                 startActivity(intent);
             }
         };
-        final ArticleDraftListAdapter articleDraftListAdapter = new ArticleDraftListAdapter(getContext(), mArticleInteractionListener);
-        recyclerView.setAdapter(articleDraftListAdapter);
+        final PublishedArticleListAdapter publishedArticleListAdapter = new PublishedArticleListAdapter(getContext(), mArticleInteractionListener);
+        recyclerView.setAdapter(publishedArticleListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Get a new or existing ViewModel from the ViewModelProvider.
-        mArticleDraftViewModel = ViewModelProviders.of(getActivity()).get(ArticleDraftViewModel.class);
+        mPublishedArticleViewModel = ViewModelProviders.of(getActivity()).get(PublishedArticleViewModel.class);
 
-        mArticleDraftViewModel.getAllArticleDrafts().observe(this, new Observer<List<ArticleDraft>>() {
+        mPublishedArticleViewModel.getAllPublishedArticles().observe(this, new Observer<List<PublishedArticle>>() {
             @Override
-            public void onChanged(@Nullable final List<ArticleDraft> articleDrafts) {
+            public void onChanged(@Nullable final List<PublishedArticle> publishedArticles) {
                 // Update the cached copy of the words in the adapter.
-                articleDraftListAdapter.setArticleDrafts(articleDrafts);
+                publishedArticleListAdapter.setPublishedArticltes(publishedArticles);
             }
         });
 

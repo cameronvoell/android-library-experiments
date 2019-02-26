@@ -8,10 +8,11 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities={ArticleDraft.class}, version=3)
+@Database(entities={ArticleDraft.class, PublishedArticle.class}, version=4)
 public abstract class ArticleDraftRoomDatabase extends RoomDatabase {
 
     public abstract ArticleDraftDao articleDraftDao();
+    public abstract PublishedArticleDao publishedArticleDao();
 
     // marking the instance as volatile to ensure atomic access to the variable
     private static volatile ArticleDraftRoomDatabase INSTANCE;

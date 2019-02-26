@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.cameronvoell.articledraftmanager.R;
 import com.cameronvoell.articledraftmanager.fragments.ArticleDraftListFragment;
+import com.cameronvoell.articledraftmanager.fragments.GlobalArticleListFragment;
 import com.cameronvoell.articledraftmanager.utils.PrefUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 public class BottomNavigationActivity extends AppCompatActivity {
 
     private ArticleDraftListFragment mArticleDraftListFragment;
+    private GlobalArticleListFragment mGlobalArticleListFragment;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -29,17 +31,14 @@ public class BottomNavigationActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_global:
-                    navigateToArticleDraftListFragment();
-                    PrefUtils.saveSelectedFragment(getBaseContext(), PrefUtils.SELECTED_FRAGMENT_1);
-                    Toast.makeText(getApplicationContext(),
-                            "selected article list",
-                            Toast.LENGTH_SHORT).show();
+                    navigateToGlobalArticleListFragment();
+                    PrefUtils.saveSelectedFragment(getBaseContext(),
+                            PrefUtils.SELECTED_FRAGMENT_GLOBAL_ARTICLES);
                     return true;
                 case R.id.navigation_drafts:
                     navigateToArticleDraftListFragment();
-                    Toast.makeText(getApplicationContext(),
-                            "selected fragment 2",
-                            Toast.LENGTH_SHORT).show();
+                    PrefUtils.saveSelectedFragment(getBaseContext(),
+                            PrefUtils.SELECTED_FRAGMENT_ARTICLE_DRAFTS);
                     return true;
             }
             return false;
@@ -56,6 +55,13 @@ public class BottomNavigationActivity extends AppCompatActivity {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        switch (PrefUtils.getSelectedFragment(this)) {
+            case PrefUtils.SELECTED_FRAGMENT_GLOBAL_ARTICLES:
+                navigateToGlobalArticleListFragment();
+                break;
+            case PrefUtils.SELECTED_FRAGMENT_ARTICLE_DRAFTS:
+                    navigateToArticleDraftListFragment();
+        }
         navigateToArticleDraftListFragment();
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -87,6 +93,15 @@ public class BottomNavigationActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void navigateToGlobalArticleListFragment (){
+        if (mGlobalArticleListFragment == null) {
+            mGlobalArticleListFragment = GlobalArticleListFragment.newInstance();
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, mGlobalArticleListFragment);
+        transaction.commit();
     }
 
     private void navigateToArticleDraftListFragment (){
