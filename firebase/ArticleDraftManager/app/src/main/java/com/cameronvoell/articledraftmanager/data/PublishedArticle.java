@@ -13,10 +13,7 @@ public class PublishedArticle implements Parcelable {
 
     public static final String INTENT_EXTRA_NAME = "published.extra.intent.extra";
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "publishedId")
-    public int publishedId = 0;
-
+    @PrimaryKey
     @NonNull
     @ColumnInfo(name = "title")
     public String mTitle;
@@ -33,7 +30,7 @@ public class PublishedArticle implements Parcelable {
     }
 
     protected PublishedArticle(Parcel in) {
-        publishedId = in.readInt();
+        //publishedId = in.readInt();
         mTitle = in.readString();
         mBody = in.readString();
         mDate = in.readLong();
@@ -58,7 +55,7 @@ public class PublishedArticle implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(publishedId);
+        //dest.writeInt(publishedId);
         dest.writeString(mTitle);
         dest.writeString(mBody);
         dest.writeLong(mDate);

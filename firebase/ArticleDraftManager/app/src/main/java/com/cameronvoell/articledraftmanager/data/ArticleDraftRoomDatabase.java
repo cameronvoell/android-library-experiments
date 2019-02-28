@@ -8,7 +8,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities={ArticleDraft.class, PublishedArticle.class}, version=4)
+@Database(entities={ArticleDraft.class, PublishedArticle.class}, version=5)
 public abstract class ArticleDraftRoomDatabase extends RoomDatabase {
 
     public abstract ArticleDraftDao articleDraftDao();

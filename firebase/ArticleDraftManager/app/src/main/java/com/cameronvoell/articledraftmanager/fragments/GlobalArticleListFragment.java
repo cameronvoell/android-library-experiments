@@ -14,8 +14,16 @@ import com.cameronvoell.articledraftmanager.data.ArticleDraft;
 import com.cameronvoell.articledraftmanager.data.PublishedArticle;
 import com.cameronvoell.articledraftmanager.viewmodel.ArticleDraftViewModel;
 import com.cameronvoell.articledraftmanager.viewmodel.PublishedArticleViewModel;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,7 +35,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class GlobalArticleListFragment extends Fragment {
 
     private PublishedArticleViewModel mPublishedArticleViewModel;
-    private PublishedArticleListAdapter.OnPublishedArticleListInteractionListener mArticleInteractionListener;
+    private PublishedArticleListAdapter.OnPublishedArticleListInteractionListener
+            mArticleInteractionListener;
+
+    private DatabaseReference mDatabaseReference;
+
 
     public GlobalArticleListFragment() {
    }
@@ -40,6 +52,8 @@ public class GlobalArticleListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -73,7 +87,41 @@ public class GlobalArticleListFragment extends Fragment {
             }
         });
 
+        mDatabaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                getAllTask(dataSnapshot);
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                getAllTask(dataSnapshot);
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                //taskDeletion(dataSnapshot);
+            }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
         return layout;
+    }
+
+
+
+    private void getAllTask(DataSnapshot dataSnapshot){
+        for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+            HashMap map = (HashMap)singleSnapshot.getValue();
+            PublishedArticle publishedArticle = new PublishedArticle((String)map.get("mTitle"), (String)map.get("mBody"), (long)map.get("mDate"));
+            mPublishedArticleViewModel.insert((PublishedArticle)publishedArticle);
+
+//            allTask.add(new Task(taskTitle));
+//            recyclerViewAdapter = new RecyclerViewAdapter(MainActivity.this, allTask);
+//            recyclerView.setAdapter(recyclerViewAdapter);
+        }
     }
 
 }
